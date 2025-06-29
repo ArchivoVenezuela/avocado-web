@@ -1,0 +1,414 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .v27-banner {
+        background: linear-gradient(135deg, #ff8c42, #e67a38);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(255, 140, 66, 0.3);
+        animation: slideInDown 0.6s ease-out;
+    }
+
+    .welcome-section {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    .welcome-section h2 {
+        font-size: 2rem;
+        color: #4A7C59;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #7FB069, #4A7C59);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+    }
+
+    .feature-card {
+        background: linear-gradient(135deg, #F7F5E6, rgba(184, 230, 184, 0.3));
+        padding: 2rem;
+        border-radius: 12px;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(127, 176, 105, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-4px);
+        border-color: #7FB069;
+        box-shadow: 0 8px 25px rgba(127, 176, 105, 0.2);
+    }
+
+    .feature-card h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #4A7C59;
+        margin-bottom: 1rem;
+    }
+
+    .form-section {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 2px solid rgba(127, 176, 105, 0.1);
+    }
+
+    .form-section h2 {
+        color: #4A7C59;
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 0.875rem 1.25rem;
+        border: 2px solid #e1e8ed;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.8);
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #7FB069;
+        box-shadow: 0 0 0 3px rgba(127, 176, 105, 0.1);
+        background: white;
+    }
+
+    .upload-area {
+        border: 2px dashed #B8E6B8;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background: rgba(127, 176, 105, 0.05);
+        position: relative;
+    }
+
+    .upload-area:hover {
+        border-color: #7FB069;
+        background: rgba(127, 176, 105, 0.1);
+    }
+
+    .upload-area input[type="file"] {
+        display: none;
+    }
+
+    .upload-label {
+        cursor: pointer;
+        color: #4A7C59;
+        font-weight: 600;
+    }
+
+    .btn {
+        background: linear-gradient(135deg, #7FB069, #4A7C59);
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        box-shadow: 0 4px 15px rgba(127, 176, 105, 0.3);
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(127, 176, 105, 0.4);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #4a7a4a, #3a6a3a);
+        font-size: 1.2rem;
+        padding: 1.25rem 2.5rem;
+        min-width: 300px;
+        justify-content: center;
+    }
+
+    .btn-secondary {
+        background: linear-gradient(135deg, #F9E784, #f39c12);
+        box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+    }
+
+    .btn-secondary:hover {
+        box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+    }
+
+    .steps-section {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border: 2px solid rgba(127, 176, 105, 0.1);
+    }
+
+    .steps-list {
+        counter-reset: step-counter;
+        list-style: none;
+        padding: 0;
+        margin: 1.5rem 0;
+    }
+
+    .steps-list li {
+        counter-increment: step-counter;
+        margin-bottom: 1.5rem;
+        padding-left: 4rem;
+        position: relative;
+        line-height: 1.6;
+    }
+
+    .steps-list li::before {
+        content: counter(step-counter);
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: linear-gradient(135deg, #7FB069, #4A7C59);
+        color: white;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    .highlight-box {
+        background: linear-gradient(135deg, #F7F5E6, rgba(127, 176, 105, 0.1));
+        padding: 1.5rem;
+        border-radius: 12px;
+        border-left: 4px solid #7FB069;
+        margin-top: 2rem;
+    }
+
+    .highlight-box strong {
+        color: #4A7C59;
+        font-size: 1.1rem;
+    }
+
+    .credentials-ready {
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border-left: 4px solid #28a745;
+        margin-bottom: 2rem;
+        color: #155724;
+    }
+
+    @keyframes slideInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .form-section, .welcome-section, .steps-section {
+            padding: 1.5rem;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            min-width: auto;
+        }
+    }
+</style>
+
+<div class="v27-banner">
+    🚀 <strong>AVOCADO Web v2.7 Enhanced</strong> - Now with Desktop-Quality Processing!
+    <div style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.9;">
+        ✨ Multiple Search Strategies | Enhanced Publisher Extraction | Real-time Statistics
+    </div>
+</div>
+
+<div class="welcome-section">
+    <h2>🥑 Welcome to AVOCADO v2.7</h2>
+    <p style="font-size: 1.1rem; color: #64748b; margin-bottom: 2rem;">
+        Enhanced web version with professional-grade bibliographic metadata processing. 
+        Convert your book lists into rich metadata with just one upload!
+    </p>
+    
+    <div class="features-grid">
+        <div class="feature-card">
+            <h3>📚 Enhanced Workflow</h3>
+            <p>Multiple search strategies for better OCLC number discovery</p>
+        </div>
+        <div class="feature-card">
+            <h3>🔍 Better Publisher Data</h3>
+            <p>6 extraction methods for comprehensive publisher information</p>
+        </div>
+        <div class="feature-card">
+            <h3>📊 Real-time Stats</h3>
+            <p>Live progress tracking with detailed statistics</p>
+        </div>
+    </div>
+</div>
+
+{% if has_credentials %}
+<div class="credentials-ready">
+    <strong>✅ Credentials Ready!</strong> Your OCLC credentials are loaded from .env file. You can upload your CSV directly below.
+</div>
+{% endif %}
+
+<div class="form-section">
+    <h2>⚙️ {% if has_credentials %}Upload Your Book List{% else %}Setup Your Credentials{% endif %}</h2>
+    {% if not has_credentials %}
+    <p style="color: #64748b; margin-bottom: 2rem;">Enter your OCLC WorldCat API credentials to get started with enhanced processing:</p>
+    {% else %}
+    <p style="color: #64748b; margin-bottom: 2rem;">Your credentials are ready. Upload your CSV file to start processing:</p>
+    {% endif %}
+    
+    <form method="POST" action="{{ url_for('index') }}" enctype="multipart/form-data">
+
+        {% if not has_credentials %}
+        <div class="form-group">
+            <label for="wskey">🔑 OCLC WSKey:</label>
+            <input type="password" id="wskey" name="wskey" required 
+                   placeholder="Enter your OCLC WSKey">
+        </div>
+        
+        <div class="form-group">
+            <label for="wssecret">🔐 OCLC Secret:</label>
+            <input type="password" id="wssecret" name="wssecret" required 
+                   placeholder="Enter your OCLC Secret">
+        </div>
+        {% else %}
+        <!-- Hidden fields for credentials when loaded from .env -->
+        <input type="hidden" name="wskey" value="">
+        <input type="hidden" name="wssecret" value="">
+        {% endif %}
+        
+        <div class="form-group">
+            <label for="csv_file">📁 Upload Your Book List (CSV):</label>
+            <div class="upload-area" onclick="document.getElementById('csv_file').click()">
+                <input type="file" id="csv_file" name="csv_file" accept=".csv" required>
+                <div class="upload-label">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📎</div>
+                    <div>Click to select your CSV file</div>
+                    <small style="color: #64748b; margin-top: 0.5rem; display: block;">
+                        CSV must have columns: OCLC #, Author, Title
+                    </small>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary">
+                🚀 Process with AVOCADO v2.7 Enhanced
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="form-section">
+    <h2>📥 Need a Template?</h2>
+    <p style="color: #64748b; margin-bottom: 1.5rem;">Download our enhanced CSV template with sample Venezuelan literature:</p>
+    <a href="{{ url_for('download_template') }}" class="btn btn-secondary">
+        📥 Download Template
+    </a>
+</div>
+
+<div class="steps-section">
+    <h2>📖 How AVOCADO v2.7 Works</h2>
+    <ol class="steps-list">
+        <li><strong>Enhanced Authentication</strong> - Secure connection to OCLC WorldCat API</li>
+        <li><strong>Smart CSV Processing</strong> - Validates and prepares your book data</li>
+        <li><strong>Multiple Search Strategies</strong> - 4 different methods to find OCLC numbers</li>
+        <li><strong>Enhanced Metadata Download</strong> - 6 methods for complete publisher data</li>
+        <li><strong>Real-time Progress</strong> - Live statistics and detailed logging</li>
+    </ol>
+    
+    <div class="highlight-box">
+        <strong>🎯 Perfect for:</strong> cultural institutions, libraries, archives, 
+        and digital humanities projects managing bibliographic collections.
+        <br><br>
+        <strong>🆕 New in v2.7:</strong> Desktop-quality processing with enhanced metadata extraction,
+        multiple search strategies, and real-time statistics tracking.
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // File upload interaction
+        const fileInput = document.getElementById('csv_file');
+        const uploadArea = document.querySelector('.upload-area');
+        const uploadLabel = document.querySelector('.upload-label');
+        
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                uploadLabel.innerHTML = `
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">✅</div>
+                    <div style="color: #4A7C59; font-weight: 600;">${e.target.files[0].name}</div>
+                    <small style="color: #64748b; margin-top: 0.5rem; display: block;">
+                        File selected - ready for v2.7 enhanced processing!
+                    </small>
+                `;
+                uploadArea.style.borderColor = '#7FB069';
+                uploadArea.style.background = 'rgba(127, 176, 105, 0.1)';
+            }
+        });
+
+        // Add loading state to form submission
+        const form = document.querySelector('form');
+        const submitBtn = document.querySelector('button[type="submit"]');
+        
+        form.addEventListener('submit', function() {
+            submitBtn.innerHTML = '⏳ Starting AVOCADO v2.7 Enhanced Processing...';
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.7';
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,4 @@
+PassengerEnabled on
+PassengerPython /home/archivov/.local/bin/python3
+
+SetEnv FLASK_ENV production

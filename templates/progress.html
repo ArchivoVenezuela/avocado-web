@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <h2>🔄 Processing Your Venezuelan Archive</h2>
+    <p>AVOCADO is working on your bibliographic metadata. This page updates automatically.</p>
+    
+    <div class="progress-container">
+        <div id="status-message" style="font-weight: 600; margin-bottom: 10px;">
+            Initializing...
+        </div>
+        
+        <div class="progress-bar">
+            <div id="progress-fill" class="progress-fill" style="width: 0%;"></div>
+        </div>
+        
+        <div id="progress-percentage" style="text-align: center; margin-top: 10px; font-weight: 500;">
+            0%
+        </div>
+    </div>
+    
+    <div style="margin: 20px 0;">
+        <h3>📋 Processing Log:</h3>
+        <div id="results-log" class="results-box">
+            <div>🥑 AVOCADO Web starting up...</div>
+        </div>
+    </div>
+    
+    <div id="download-section" style="display: none; text-align: center; margin-top: 30px;">
+        <h3 style="color: #4a7c59; margin-bottom: 15px;">🎉 Processing Complete!</h3>
+        <a href="{{ url_for('download') }}" class="btn" style="margin-right: 15px;">
+            📥 Download Results CSV
+        </a>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+            🔄 Process Another File
+        </a>
+    </div>
+</div>
+
+<script>
+function updateProgress() {
+    fetch('/api/status')
+        .then(response => response.json())
+        .then(data => {
+            // Update progress bar
+            const progressFill = document.getElementById('progress-fill');
+            const progressPercentage = document.getElementById('progress-percentage');
+            const statusMessage = document.getElementById('status-message');
+            const resultsLog = document.getElementById('results-log');
+            const downloadSection = document.getElementById('download-section');
+            
+            // Update progress
+            const progress = Math.round(data.progress || 0);
+            progressFill.style.width = progress + '%';
+            progressPercentage.textContent = progress + '%';
+            
+            // Update status message
+            statusMessage.textContent = data.message || 'Processing...';
+            
+            // Update results log
+            if (data.results && data.results.length > 0) {
+                const logContent = data.results.map(result => `<div>${result}</div>`).join('');
+                resultsLog.innerHTML = logContent;
+                // Scroll to bottom
+                resultsLog.scrollTop = resultsLog.scrollHeight;
+            }
+            
+            // Show download section if complete
+            if (!data.active && data.progress >= 100 && data.output_file) {
+                downloadSection.style.display = 'block';
+            }
+            
+            // Continue polling if still active
+            if (data.active) {
+                setTimeout(updateProgress, 2000); // Update every 2 seconds
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching status:', error);
+            setTimeout(updateProgress, 5000); // Retry in 5 seconds
+        });
+}
+
+// Start polling when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    updateProgress();
+});
+</script>
+{% endblock %}
